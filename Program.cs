@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace TransporteApp
 {
@@ -156,51 +156,10 @@ namespace TransporteApp
                             break;
 
                         // =======================================================
-                        // 6️⃣ SUBMENÚ DE REPORTES
+                        // 6️⃣ SUBMENÚ DE REPORTES (ahora modularizado)
                         // =======================================================
                         case 6:
-                            int subop = 0;
-                            do
-                            {
-                                Console.Clear();
-                                Console.WriteLine("=== SUBMENÚ DE REPORTES ===");
-                                Console.WriteLine("1. Listado de Choferes");
-                                Console.WriteLine("2. Listado de Vehículos por Estado");
-                                Console.WriteLine("3. Viajes Programados por Fecha");
-                                Console.WriteLine("0. Volver al Menú Principal");
-                                Console.WriteLine("----------------------------");
-                                Console.Write("Seleccione una opción: ");
-
-                                try { subop = int.Parse(Console.ReadLine()); }
-                                catch { subop = -1; }
-
-                                Console.Clear();
-
-                                switch (subop)
-                                {
-                                    case 1:
-                                        empresa.ReporteChoferes();
-                                        break;
-                                    case 2:
-                                        empresa.ReporteVehiculos();
-                                        break;
-                                    case 3:
-                                        Console.Write("Ingrese la fecha (aaaa-mm-dd): ");
-                                        DateTime f2 = DateTime.Parse(Console.ReadLine());
-                                        empresa.ReporteViajesPorFecha(f2);
-                                        break;
-                                    case 0:
-                                        Console.WriteLine("Volviendo al menú principal...");
-                                        break;
-                                    default:
-                                        Console.WriteLine("Opción inválida.");
-                                        break;
-                                }
-
-                                Console.WriteLine("\nPresione una tecla para continuar...");
-                                Console.ReadKey(true);
-
-                            } while (subop != 0);
+                            MostrarSubmenuReportes(empresa);
                             break;
 
                         // =======================================================
@@ -264,6 +223,55 @@ namespace TransporteApp
             } while (opcion != 0);
 
             Console.ReadKey(true);
+        }
+
+        // =======================================================
+        // FUNCIÓN SEPARADA: SUBMENÚ DE REPORTES
+        // =======================================================
+        static void MostrarSubmenuReportes(Empresa empresa)
+        {
+            int subop = 0;
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("=== SUBMENÚ DE REPORTES ===");
+                Console.WriteLine("1. Listado de Choferes");
+                Console.WriteLine("2. Listado de Vehículos por Estado");
+                Console.WriteLine("3. Viajes Programados por Fecha");
+                Console.WriteLine("0. Volver al Menú Principal");
+                Console.WriteLine("----------------------------");
+                Console.Write("Seleccione una opción: ");
+
+                try { subop = int.Parse(Console.ReadLine()); }
+                catch { subop = -1; }
+
+                Console.Clear();
+
+                switch (subop)
+                {
+                    case 1:
+                        empresa.ReporteChoferes();
+                        break;
+                    case 2:
+                        empresa.ReporteVehiculos();
+                        break;
+                    case 3:
+                        Console.Write("Ingrese la fecha (aaaa-mm-dd): ");
+                        DateTime f2 = DateTime.Parse(Console.ReadLine());
+                        empresa.ReporteViajesPorFecha(f2);
+                        break;
+                    case 0:
+                        Console.WriteLine("Volviendo al menú principal...");
+                        break;
+                    default:
+                        Console.WriteLine("Opción inválida.");
+                        break;
+                }
+
+                Console.WriteLine("\nPresione una tecla para continuar...");
+                Console.ReadKey(true);
+
+            } while (subop != 0);
         }
     }
 }
