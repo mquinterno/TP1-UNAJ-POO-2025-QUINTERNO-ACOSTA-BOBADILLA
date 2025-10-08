@@ -1,3 +1,36 @@
+# TP Final - Programación con Objetos (C# / .NET 4.0)
+
+Trabajo práctico final de la materia **Programación con Objetos**, Universidad Nacional Arturo Jauretche (UNAJ), 2025.
+
+## Integrantes
+- Mauricio Ariel Quinterno
+- Santiago Acosta
+- Javier Bobadilla
+
+## Descripción
+Sistema de gestión de transporte con choferes, vehículos y viajes.  
+Aplica conceptos de **herencia, composición, polimorfismo y excepciones personalizadas**.
+
+## Entorno
+- SharpDevelop 4.4.1.9729  
+- .NET Framework 4.0  
+- Lenguaje: C#
+
+## Estructura
+- `Empresa.cs`: clase principal de administración  
+- `Viaje.cs`: gestiona viajes y validaciones  
+- `Vehiculo.cs`, `Furgon.cs`, `MotoReparto.cs`: jerarquía polimórfica  
+- `Chofer.cs`: entidad base del sistema  
+- Excepciones personalizadas: `ChoferOcupadoException`, `EliminacionAsignadaException`, `CapacidadExcedidaException`
+
+## UML
+El diagrama de clases se incluye en `/uml_transporteapp.drawio`
+
+## Ejecución
+Compilar el proyecto en SharpDevelop o Visual Studio con .NET Framework 4.0 y ejecutar `Program.cs`.
+
+
+
 # TP1-UNAJ-POO-2025-QUINTERNO-ACOSTA-BOBADILLA
 Trabajo practico Enunciado numero 1 - Grupo 1.
 Pautas generales:
