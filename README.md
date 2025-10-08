@@ -24,7 +24,7 @@ Aplica conceptos de **herencia, composición, polimorfismo y excepciones persona
 - Excepciones personalizadas: `ChoferOcupadoException`, `EliminacionAsignadaException`, `CapacidadExcedidaException`
 
 ## UML
-El diagrama de clases se incluye en `/uml_transporteapp.drawio`
+El diagrama de clases se incluye en `/UML-Grupo 1 - Enunciado 1.png`
 
 ## Ejecución
 Compilar el proyecto en SharpDevelop o Visual Studio con .NET Framework 4.0 y ejecutar `Program.cs`.
