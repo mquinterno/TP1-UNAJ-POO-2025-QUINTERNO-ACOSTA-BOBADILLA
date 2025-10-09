@@ -1,23 +1,38 @@
-﻿using System;
+using System;
 
 namespace TransporteApp
 {
     // ===========================================================
     // Clase MOTO DE REPARTO (hereda de Vehículo)
+    // -----------------------------------------------------------
+    // Nuevo cálculo de costo operativo:
+    //   costo = 5000 × (1 + distancia/100) × (carga / capacidad)
     // ===========================================================
     public class MotoReparto : Vehiculo
     {
-        // Constructor que llama al base
+        // Constructor
         public MotoReparto(string codigoInterno, string patente, double capacidad, double kilometraje, double costoBase)
             : base(codigoInterno, patente, capacidad, kilometraje, costoBase)
         {
         }
 
-        // Implementación polimórfica
+        // Método original (se mantiene para compatibilidad)
         public override double CalcularCosto(double distancia)
         {
-            // Fórmula: costo base + (distancia * 0.8)
             return costoBase + (distancia * 0.8);
+        }
+
+        // ===========================================================
+        // Nuevo método de costo operativo según el TP
+        // ===========================================================
+        public override double CalcularCostoOperativo(double carga, double distancia)
+        {
+            if (capacidad <= 0)
+                throw new Exception("Capacidad de la moto no puede ser cero.");
+
+            double porcentajeCarga = carga / capacidad;
+            double costo = 5000 * (1 + (distancia / 100)) * porcentajeCarga;
+            return Math.Round(costo, 2);
         }
     }
 }
