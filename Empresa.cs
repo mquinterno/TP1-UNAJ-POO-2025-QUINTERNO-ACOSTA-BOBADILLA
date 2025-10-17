@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -35,6 +35,9 @@ namespace TransporteApp
             // Cargar datos desde archivos (persistencia básica)
             CargarChoferesCSV();
             CargarVehiculosCSV();
+
+            // cargar viajes y restaurar asignaciones (chofer/vehículo)
+            CargarViajesCSV();
         }
 
         // ===========================================================
@@ -55,6 +58,13 @@ namespace TransporteApp
         public void RegistrarViaje(Viaje v)
         {
             viajes.Add(v);
+
+            // persistir estados tras la asignación del viaje
+            GuardarChoferesCSV();    // guarda Asignado (chofer ocupado/libre)
+            GuardarVehiculosCSV();   // guarda Disponible (vehículo en viaje/disponible)
+
+            // persistir el viaje (para restaurar al reiniciar)
+            GuardarViajesCSV();
         }
 
         // ===========================================================
@@ -92,6 +102,11 @@ namespace TransporteApp
             if (c == null)
                 throw new Exception("Chofer no encontrado.");
 
+            // bloquear si el estado persistido indica que está asignado
+            if (c.Asignado)
+                throw new EliminacionAsignadaException(
+                    "No se puede eliminar: el chofer está asignado a un viaje activo.");
+
             // Verificar si participa en algún viaje activo
             foreach (Viaje v in viajes)
             {
@@ -108,6 +123,9 @@ namespace TransporteApp
             // Si no está en viajes activos, eliminarlo
             choferes.Remove(c);
             GuardarChoferesCSV();
+
+            // mantener coherencia de viajes (si hiciera falta) y persistir
+            GuardarViajesCSV();
         }
 
         // Solo se permite eliminar si el vehículo no participa en ningún viaje activo
@@ -117,6 +135,11 @@ namespace TransporteApp
 
             if (v == null)
                 throw new Exception("Vehículo no encontrado.");
+
+            // bloquear si el estado persistido indica que NO está disponible
+            if (!v.Disponible)
+                throw new EliminacionAsignadaException(
+                    "No se puede eliminar: el vehículo está asignado a un viaje activo.");
 
             foreach (Viaje via in viajes)
             {
@@ -129,12 +152,14 @@ namespace TransporteApp
 
             vehiculos.Remove(v);
             GuardarVehiculosCSV();
+
+            // mantener coherencia de viajes (si hiciera falta) y persistir
+            GuardarViajesCSV();
         }
 
         // ===========================================================
-        // MÉTODOS DE PERSISTENCIA EN ARCHIVOS CSV
+        // PERSISTENCIA EN ARCHIVOS CSV
         // ===========================================================
-
         public void GuardarChoferesCSV()
         {
             using (StreamWriter sw = new StreamWriter("choferes.csv", false))
@@ -172,8 +197,12 @@ namespace TransporteApp
                     if (partes.Length >= 3)
                     {
                         string nombre = partes[0];
-                        double sueldo = double.Parse(partes[1]);
-                        bool asignado = bool.Parse(partes[2]);
+                        double sueldo = 0;
+                        double.TryParse(partes[1], out sueldo);
+                        bool asignado = false;
+                        bool.TryParse(partes[2], out asignado);
+
+                        // Campos no persistidos se rellenan con valores por defecto
                         Chofer c = new Chofer(nombre, "Sin dirección", "Soltero", DateTime.Now.AddYears(-30), sueldo);
                         c.Asignado = asignado;
                         choferes.Add(c);
@@ -198,8 +227,12 @@ namespace TransporteApp
                     {
                         string codigo = partes[0];
                         string tipo = partes[1];
-                        double capacidad = double.Parse(partes[2]);
-                        bool disponible = bool.Parse(partes[3]);
+
+                        double capacidad = 0;
+                        double.TryParse(partes[2], out capacidad);
+
+                        bool disponible = true;
+                        bool.TryParse(partes[3], out disponible);
 
                         Vehiculo v;
                         if (tipo == "Furgon")
@@ -213,6 +246,101 @@ namespace TransporteApp
                 }
             }
         }
+
+        // ===========================================================
+        // PERSISTENCIA DE VIAJES (solo datos necesarios para asignaciones)
+        // Formato por línea:
+        // CodigoViaje;Fecha(yyyy-MM-dd);CodigoVehiculo;Chofer1|Chofer2|...
+        // ===========================================================
+        private void GuardarViajesCSV()
+        {
+            using (StreamWriter sw = new StreamWriter("viajes.csv", false))
+            {
+                foreach (Viaje v in viajes)
+                {
+                    string codVeh = (v.ObtenerVehiculo() != null) ? v.ObtenerVehiculo().CodigoInterno : "";
+                    List<Chofer> chs = v.ObtenerChoferes();
+                    string nombresChoferes = "";
+                    for (int i = 0; i < chs.Count; i++)
+                    {
+                        nombresChoferes += chs[i].Nombre;
+                        if (i < chs.Count - 1) nombresChoferes += "|";
+                    }
+                    sw.WriteLine(
+                        v.Codigo + ";" +
+                        v.Fecha.ToString("yyyy-MM-dd") + ";" +
+                        codVeh + ";" +
+                        nombresChoferes
+                    );
+                }
+            }
+        }
+
+private void CargarViajesCSV()
+{
+    if (!File.Exists("viajes.csv"))
+        return;
+
+    // 1) Partimos de un estado limpio en memoria
+    viajes.Clear();
+    foreach (Chofer c in choferes) c.Asignado = false;
+    foreach (Vehiculo vv in vehiculos) vv.Disponible = true;
+
+    using (StreamReader sr = new StreamReader("viajes.csv"))
+    {
+        string linea;
+        while ((linea = sr.ReadLine()) != null)
+        {
+            string[] partes = linea.Split(';');
+            if (partes.Length >= 4)
+            {
+                string cod = partes[0];
+
+                DateTime fec = DateTime.Now;
+                DateTime.TryParse(partes[1], out fec);
+
+                string codVeh = partes[2];
+                string choferesStr = partes[3];
+
+                // Creamos un Viaje con placeholders para campos no persistidos
+                Viaje vj = new Viaje(cod, "N/D", "N/D", 0, fec, 0);
+
+                // 2) Reasignar vehículo (habilitando temporalmente para no disparar excepción)
+                if (!string.IsNullOrEmpty(codVeh))
+                {
+                    Vehiculo veh = BuscarVehiculo(codVeh);
+                    if (veh != null)
+                    {
+                        veh.Disponible = true;    // habilitamos temporalmente
+                        vj.AsignarVehiculo(veh);   // el método lo dejará en false (en viaje)
+                    }
+                }
+
+                // 3) Reasignar choferes (habilitando temporalmente para no disparar excepción)
+                if (!string.IsNullOrEmpty(choferesStr))
+                {
+                    string[] nombres = choferesStr.Split('|');
+                    foreach (string nom in nombres)
+                    {
+                        Chofer ch = BuscarChofer(nom);
+                        if (ch != null)
+                        {
+                            ch.Asignado = false;    // habilitamos temporalmente
+                            vj.AgregarChofer(ch);   // el método lo dejará en true (ocupado)
+                        }
+                    }
+                }
+
+                viajes.Add(vj);
+            }
+        }
+    }
+
+    // 4) Persistimos los estados recalculados al finalizar la carga
+    GuardarChoferesCSV();
+    GuardarVehiculosCSV();
+}
+
 
         // ===========================================================
         // REPORTES (punto 6 del Trabajo Práctico)
