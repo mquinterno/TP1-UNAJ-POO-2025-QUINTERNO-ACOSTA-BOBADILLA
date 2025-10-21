@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace TransporteApp
 {
@@ -6,9 +6,9 @@ namespace TransporteApp
     // Clase base VEHÍCULO
     // -----------------------------------------------------------
     // Aplica:
-    //  - Herencia (Clase 6)
-    //  - Polimorfismo (Clase 7)
-    //  - Nuevo: interfaz para cálculo de costo operativo (TP)
+    //  - Herencia 
+    //  - Polimorfismo 
+    //  - Interfaz para cálculo de costo operativo 
     // ===========================================================
     public abstract class Vehiculo
     {
@@ -30,7 +30,7 @@ namespace TransporteApp
             this.disponible = true;
         }
 
-        // Propiedades (encapsulamiento)
+        // Propiedades (con encapsulamiento)
         public string CodigoInterno { get { return codigoInterno; } }
         public string Patente { get { return patente; } }
         public double Capacidad { get { return capacidad; } }
@@ -46,12 +46,11 @@ namespace TransporteApp
         // MÉTODOS POLIMÓRFICOS
         // ===========================================================
         // Se mantiene el método abstracto original (distancia),
-        // pero agregamos una sobrecarga opcional con carga y distancia
-        // para cumplir el cálculo del TP sin afectar compatibilidad.
+        // pero agregamos una sobrecarga opcional con carga y distancia.
         // ===========================================================
         public abstract double CalcularCosto(double distancia);
 
-        // Nueva versión compatible con TP (usa porcentaje de carga)
+        
         public virtual double CalcularCostoOperativo(double carga, double distancia)
         {
             // Método virtual vacío que las subclases sobrescriben

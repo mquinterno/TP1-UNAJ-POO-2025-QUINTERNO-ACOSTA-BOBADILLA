@@ -4,7 +4,7 @@ namespace TransporteApp
 {
     // ===========================================================
     // Excepción personalizada - Eliminación no permitida
-    // Aplica: Herencia de Exception (Clase 8)
+    // Aplica: Herencia de Exception
     // ===========================================================
     public class EliminacionAsignadaException : Exception
     {

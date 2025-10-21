@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -12,7 +12,7 @@ namespace TransporteApp
     //  - Polimorfismo (vehículos diferentes)
     //  - Archivos (generación de informe)
     //  - Excepciones personalizadas
-    //  - Nuevo: cálculo de costo operativo (según TP)
+    //  - cálculo de costo operativo 
     // ===========================================================
     public class Viaje
     {
@@ -25,7 +25,7 @@ namespace TransporteApp
         private Vehiculo vehiculo;
         private List<Chofer> choferes;
 
-        // Nueva propiedad: costo operativo real del viaje
+        // Costo operativo real del viaje
         private double costoOperativo;
 
         // Propiedad usada por Empresa para controlar estado
@@ -98,7 +98,7 @@ namespace TransporteApp
         // MÉTODOS DE CÁLCULO
         // ===========================================================
 
-        // ✅ Nuevo: cálculo del costo operativo (según tipo de vehículo)
+        // cálculo del costo operativo (según tipo de vehículo)
         private void CalcularCostoOperativo()
         {
             if (vehiculo != null)
@@ -112,7 +112,7 @@ namespace TransporteApp
             }
         }
 
-        // Método anterior (se mantiene para compatibilidad)
+        
         public double CalcularCostoTotal()
         {
             double costo = 0;

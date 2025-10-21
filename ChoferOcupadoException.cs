@@ -4,7 +4,7 @@ namespace TransporteApp
 {
     // ===========================================================
     // Excepción personalizada - Chofer ya ocupado
-    // Aplica: Herencia de Exception (Clase 8)
+    // Aplica: Herencia de Exception
     // ===========================================================
     public class ChoferOcupadoException : Exception
     {

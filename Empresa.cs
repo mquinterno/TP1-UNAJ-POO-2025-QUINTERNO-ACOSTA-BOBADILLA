@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -7,12 +7,12 @@ namespace TransporteApp
     // ===========================================================
     // Clase EMPRESA
     // -----------------------------------------------------------
-    // Aplica:
-    //  - Composición (Clase 5)
-    //  - Colecciones (Clase 4)
-    //  - Archivos de texto (Clase 5)
-    //  - Herencia y Polimorfismo (Clase 6 y 7)
-    //  - Excepciones personalizadas (Clase 8)
+    // Aplicamos:
+    //  - Composición
+    //  - Colecciones 
+    //  - Archivos de texto 
+    //  - Herencia y Polimorfismo 
+    //  - Excepciones personalizadas 
     // ===========================================================
     public class Empresa
     {
@@ -302,7 +302,7 @@ private void CargarViajesCSV()
                 string codVeh = partes[2];
                 string choferesStr = partes[3];
 
-                // Creamos un Viaje con placeholders para campos no persistidos
+                // Creamos un Viaje con datos provisorios para campos no persistidos
                 Viaje vj = new Viaje(cod, "N/D", "N/D", 0, fec, 0);
 
                 // 2) Reasignar vehículo (habilitando temporalmente para no disparar excepción)
@@ -343,7 +343,7 @@ private void CargarViajesCSV()
 
 
         // ===========================================================
-        // REPORTES (punto 6 del Trabajo Práctico)
+        // REPORTES 
         // ===========================================================
         public void ReporteChoferes()
         {

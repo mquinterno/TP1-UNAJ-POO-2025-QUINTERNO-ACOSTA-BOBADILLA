@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace TransporteApp
 {
@@ -6,11 +6,11 @@ namespace TransporteApp
     {
         public static void Main(string[] args)
         {
-            // Creación de la empresa (Clase 5 - Composición)
+            // Creación de la empresa 
             Empresa empresa = new Empresa("Transporte Quilmes", "30-12345678-9");
             int opcion = 0;
 
-            // Bucle principal (Clase 2 - estructuras de control)
+            // Bucle principal
             do
             {
                 Console.Clear();
@@ -43,7 +43,7 @@ namespace TransporteApp
                     switch (opcion)
                     {
                         // =======================================================
-                        // 1️⃣ REGISTRAR CHOFER
+                        // 1️ REGISTRAR CHOFER
                         // =======================================================
                         case 1:
                             Console.WriteLine("=== REGISTRAR NUEVO CHOFER ===");
@@ -68,7 +68,7 @@ namespace TransporteApp
                             break;
 
                         // =======================================================
-                        // 2️⃣ REGISTRAR VEHÍCULO
+                        // 2️ REGISTRAR VEHÍCULO
                         // =======================================================
                         case 2:
                             Console.WriteLine("=== REGISTRAR VEHÍCULO ===");
@@ -101,7 +101,7 @@ namespace TransporteApp
                             break;
 
                         // =======================================================
-                        // 3️⃣ PLANIFICAR VIAJE
+                        // 3️ PLANIFICAR VIAJE
                         // =======================================================
                         case 3:
                             Console.WriteLine("=== PLANIFICAR VIAJE ===");
@@ -139,7 +139,7 @@ namespace TransporteApp
                             break;
 
                         // =======================================================
-                        // 4️⃣ LISTAR CHOFERES
+                        // 4️ LISTAR CHOFERES
                         // =======================================================
                         case 4:
                             Console.WriteLine("=== LISTADO DE CHOFERES ===");
@@ -147,7 +147,7 @@ namespace TransporteApp
                             break;
 
                         // =======================================================
-                        // 5️⃣ LISTAR VIAJES POR FECHA
+                        // 5️ LISTAR VIAJES POR FECHA
                         // =======================================================
                         case 5:
                             Console.Write("Ingrese la fecha (aaaa-mm-dd): ");
@@ -156,14 +156,14 @@ namespace TransporteApp
                             break;
 
                         // =======================================================
-                        // 6️⃣ SUBMENÚ DE REPORTES (ahora modularizado)
+                        // 6️ SUBMENÚ DE REPORTES (ahora modularizado)
                         // =======================================================
                         case 6:
                             MostrarSubmenuReportes(empresa);
                             break;
 
                         // =======================================================
-                        // 7️⃣ ELIMINAR CHOFER
+                        // 7️ ELIMINAR CHOFER
                         // =======================================================
                         case 7:
                             Console.WriteLine("=== ELIMINAR CHOFER ===");
@@ -182,7 +182,7 @@ namespace TransporteApp
                             break;
 
                         // =======================================================
-                        // 8️⃣ ELIMINAR VEHÍCULO
+                        // 8️ ELIMINAR VEHÍCULO
                         // =======================================================
                         case 8:
                             Console.WriteLine("=== ELIMINAR VEHÍCULO ===");
@@ -201,7 +201,7 @@ namespace TransporteApp
                             break;
 
                         // =======================================================
-                        // 0️⃣ SALIR
+                        // 0️ SALIR
                         // =======================================================
                         case 0:
                             Console.WriteLine("Fin del programa. Gracias por usar el sistema.");

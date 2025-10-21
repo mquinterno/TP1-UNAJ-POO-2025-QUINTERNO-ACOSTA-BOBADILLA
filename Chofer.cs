@@ -25,7 +25,7 @@ namespace TransporteApp
             this.asignado = false;
         }
 
-        // Propiedades (Clase 3)
+        // Propiedades 
         public string Nombre
         {
             get { return nombre; }
@@ -50,7 +50,7 @@ namespace TransporteApp
             set { asignado = value; }
         }
 
-        // Método que aplica uso de DateTime (Clase 3)
+        // Método que aplica uso de DateTime
         public int CalcularEdad()
         {
             int edad = DateTime.Now.Year - fechaNacimiento.Year;

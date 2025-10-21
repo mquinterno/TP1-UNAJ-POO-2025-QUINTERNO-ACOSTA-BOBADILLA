@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace TransporteApp
 {
@@ -16,14 +16,14 @@ namespace TransporteApp
         {
         }
 
-        // Método original (se mantiene para compatibilidad)
+        
         public override double CalcularCosto(double distancia)
         {
             return costoBase + (distancia * 0.8);
         }
 
         // ===========================================================
-        // Nuevo método de costo operativo según el TP
+        // Nuevo método de costo operativo
         // ===========================================================
         public override double CalcularCostoOperativo(double carga, double distancia)
         {
